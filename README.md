@@ -20,19 +20,41 @@ Automate real-world travel booking scenarios on [EaseMyTrip](https://www.easemyt
 ## 🚗 Key Scenarios Automated
 
 1. **Cab Booking Flow**
-   - Book one-way outstation cab from Delhi to Manali  
-   - Select future date/time (e.g., 23 Dec 2019, 6:30 AM)  
-   - Car type: SUV  
-   - Extract and display the **lowest available charge**
+   ```
+   Airport
+      - Book pick-up and drop to airport cab
+      - Select future date/time  
+      - Car type: Sedan
+      - Extract and display the **lowest available charge**
+   ```
+   ```
+   Outstation
+      - Book one-way and round trip outstation cab
+      - Select future date/time
+      - Car type: SUV  
+      - Extract and display the **lowest available charge**
+   ```
+   ```
+   Hourly
+      - Book an Hourly cab  
+      - Select future date/time
+      - Car type: SUV  
+      - Extract and display the **lowest available charge**
+   ```
 
-2. **Gift Card Validation**
+3. **Gift Card Validation**
    - Navigate to Group Gifting section  
    - Enter invalid email and form data  
    - Capture and assert the **warning/error message**
 
-3. **Hotel Booking Page**
+4. **Hotel Booking Page**
    - Extract all available numbers of adult guests from the UI  
    - Store results in a collection and **print the list**
+
+3. **Activities Page**
+   - Navigate to activities section
+   - Enter the city to fecth the activities details
+   - Display the activities 
 
 ---
 
@@ -48,7 +70,7 @@ Automate real-world travel booking scenarios on [EaseMyTrip](https://www.easemyt
 
 ## 📁 Project Structure
 
-```plaintext
+```
 EaseMyTrip
 ├── src
 │   ├── main
