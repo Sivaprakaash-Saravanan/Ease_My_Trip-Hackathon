@@ -52,8 +52,6 @@ Automate real-world travel booking scenarios on [EaseMyTrip](https://www.easemyt
 EaseMyTrip
 ├── src
 │   ├── main
-│   │   ├── java
-│   │   └── resources
 │   └── test
 │       ├── java
 │       │   ├── cabsObjectRepo       # Cab booking page objects
@@ -66,17 +64,15 @@ EaseMyTrip
 │       └── resources
 │           ├── data                 # Test data files
 │           └── features             # Cucumber feature files
-│               ├── allure.properties 		 # Allure report settings
-│               └── log4j2.xml             # Logging configuration
-├── JRE System Library [JavaSE-11]
-├── Maven Dependencies
-├── logs           	   # Execution logs
+│           ├── allure.properties    # Allure report settings
+│           └── log4j2.xml           # Logging configuration
+├── logs                # Execution logs
 ├── Screenshots         # Captured screenshots
 ├── target              # Cucumber and Allure Reports
 ├── test-output         # TestNG reports
-├── pom.xml					# Maven configuration
+├── pom.xml             # Maven configuration
 ├── README.md
-└── testng.xml				# TestNG suite config
+└── testng.xml          # TestNG suite config
 ```
 
 ---
