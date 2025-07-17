@@ -49,44 +49,34 @@ Automate real-world travel booking scenarios on [EaseMyTrip](https://www.easemyt
 ## 📁 Project Structure
 
 ```plaintext
-EaseMyTrip/
-├── pom.xml                  # Maven configuration
-├── testng.xml               # TestNG suite config
-├── allure.properties        # Allure report settings
-├── log4j2.xml               # Logging configuration
-├── automation.log           # Execution logs
-├── logos/                   # Branding assets
-├── Screenshots/             # Captured screenshots
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   └── resources/
-│   └── test/
-│       ├── java/
-│       │   ├── cabsObjectRepo/       # Cab booking page objects
-│       │   ├── hooks/                # Cucumber hooks
-│       │   ├── objectRepositories/   # Other page objects
-│       │   ├── retry/                # Retry logic
-│       │   ├── stepDefinitions/      # Step definitions
-│       │   ├── testsRunner/          # Test runner
-│       │   ├── utilities/            # Utility classes
-│       │   │   ├── ExcelWrite.java
-│       │   │   ├── JsonDataReader.java
-│       │   │   ├── JsonDataWriter.java
-│       │   │   ├── ReadXMLUtil.java
-│       │   │   ├── ScreenshotUtil.java
-│       │   │   └── TextFileWriter.java
-│       └── resources/
-│           └── data/                 # Test data files
-├── features/                         # Cucumber feature files
-│   ├── AirportCabs.feature
-│   ├── OutstationCabs.feature
-│   ├── HourlyCabs.feature
-│   ├── Activities.feature
-│   ├── Hotels.feature
-│   └── GiftCards.feature
-├── target/                           # Build output
-└── test-output/                      # TestNG reports
+EaseMyTrip
+├── src
+│   ├── main
+│   │   ├── java
+│   │   └── resources
+│   └── test
+│       ├── java
+│       │   ├── cabsObjectRepo       # Cab booking page objects
+│       │   ├── hooks                # Cucumber hooks
+│       │   ├── objectRepositories   # Other page objects
+│       │   ├── retry                # Retry logic
+│       │   ├── stepDefinitions      # Step definitions
+│       │   ├── testRunner           # Test runner
+│       │   └── utilities            # Utility classes
+│       └── resources
+│           ├── data                 # Test data files
+│           └── features             # Cucumber feature files
+│               ├── allure.properties 		 # Allure report settings
+│               └── log4j2.xml               # Logging configuration
+├── JRE System Library [JavaSE-11]
+├── Maven Dependencies
+├── logs           			# Execution logs
+├── Screenshots             # Captured screenshots
+├── target                  # Cucumber and Allure Reports
+├── test-output             # TestNG reports
+├── pom.xml					# Maven configuration
+├── README.md
+└── testng.xml				# TestNG suite config
 ```
 
 ---
