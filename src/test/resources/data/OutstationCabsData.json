@@ -1,0 +1,20 @@
+{
+  "OneWayTrip": {
+    "TripType": "OneWay",
+    "FromCity":"Hyderabad",
+    "ToCity":"Vijayawada",
+    "PickupDate": "10/10/2025",
+    "PickupTime": "10:00 AM",
+    "Filter":"SUV"
+  },
+  "RoundTrip": {
+    "TripType": "Round",
+    "FromCityR":"Vijayawada",
+    "ToCityR":"Hyderabad",
+    "PickupDate": "10/10/2025",
+    "PickupTime": "10:00 AM",
+    "ReturnDate": "11/10/2025",
+    "ReturnTime": "10:00 PM",
+    "Filter":"SUV"
+  }
+}

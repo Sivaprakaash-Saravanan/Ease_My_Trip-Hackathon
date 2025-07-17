@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmlUtil>
+	<data>
+		<city>Ba</city>
+		<monthAndYear>September 2025</monthAndYear>
+		<date>25</date>
+		<fullCity>Delhi</fullCity>
+		<selectNewDelhi>New Delhi</selectNewDelhi>	
+		<cityName>Delhi</cityName>
+		<place>Dwarka</place>
+		<City>Delhi</City>
+		<ciMonth>Aug</ciMonth>
+		<ciDate>25</ciDate>
+		<coMonth>Aug</coMonth>
+		<coDate>30</coDate>
+	</data>
+</xmlUtil>
