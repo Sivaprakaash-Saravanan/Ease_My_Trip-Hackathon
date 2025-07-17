@@ -67,13 +67,13 @@ EaseMyTrip
 │           ├── data                 # Test data files
 │           └── features             # Cucumber feature files
 │               ├── allure.properties 		 # Allure report settings
-│               └── log4j2.xml               # Logging configuration
+│               └── log4j2.xml             # Logging configuration
 ├── JRE System Library [JavaSE-11]
 ├── Maven Dependencies
-├── logs           			# Execution logs
-├── Screenshots             # Captured screenshots
-├── target                  # Cucumber and Allure Reports
-├── test-output             # TestNG reports
+├── logs           	   # Execution logs
+├── Screenshots         # Captured screenshots
+├── target              # Cucumber and Allure Reports
+├── test-output         # TestNG reports
 ├── pom.xml					# Maven configuration
 ├── README.md
 └── testng.xml				# TestNG suite config
