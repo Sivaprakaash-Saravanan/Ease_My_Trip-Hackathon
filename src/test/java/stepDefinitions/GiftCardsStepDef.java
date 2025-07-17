@@ -40,7 +40,6 @@ public class GiftCardsStepDef {
 
 	@Given("the user clicks on More tab and selects GiftCard to test {string}")
 	public void the_user_clicks_on_more_tab_and_selects_gift_card(String testCaseId) throws IOException {
-		// Write code here that turns the phrase above into concrete actions
 		id = testCaseId;
 		log = DriverSetup.getLogger();
 		log.info("***** TC_09-validating email field in GiftCards Section*****");
@@ -60,20 +59,17 @@ public class GiftCardsStepDef {
 
 	@Given("scroll to festival and clicks festival then selects Diwali GiftCard")
 	public void scroll_to_festival_and_clicks_festival_then_selects_diwali_gift_card() {
-		// Write code here that turns the phrase above into concrete actions
 		gift.selectingCard();
 	}
 
 	@Given("filling the necessary data in the form which is in excel file")
 	public void filling_the_necessary_data_in_the_form() {
-		// Write code here that turns the phrase above into concrete actions
 		log.info("entering data...");
 		gift.fillForm(row.get("Denomination Amount".trim()), row.get("Quantity").trim(), row.get("Sender Name").trim());
 	}
 
 	@When("the user enters Email and MobileNumber then clicks Accept check box")
 	public void the_user_enters_email_and_mobile_number_then_clicks_accept_chkbox() throws IOException {
-		// Write code here that turns the phrase above into concrete actions
 		log.info("validating fields...");
 		gift.validateEmail(row.get("Email"));
 		gift.validateMobileNum(row.get("Mobile No"));
@@ -81,7 +77,6 @@ public class GiftCardsStepDef {
 
 	@Then("it displays error message and captures screenshot")
 	public void it_displays_error_message_and_captures_screenshot() throws Exception {
-		// Write code here that turns the phrase above into concrete actions
 		writer = new ExcelWrite(filePath, "FormInfo");
 		writer.setCellValue(0, 6, "status");
 		log.info("generating Screenshots");

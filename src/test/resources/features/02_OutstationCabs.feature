@@ -1,5 +1,7 @@
-Feature: Searching for Outstation Cab details on EaseMyTrip
+
 @sanity
+Feature: Searching for Outstation Cab details on EaseMyTrip
+
 Scenario: Book Outstation with one-way trip
    Given The user go to Cabs and select Outstation OneWay Trip
    When The user select from city and to city
@@ -8,8 +10,7 @@ Scenario: Book Outstation with one-way trip
    Then The user click Search
    And The user apply SUV filter and printing results based on more options
    
-   
-   @sanity
+  
    Scenario: Book Outstation for round-way trip
    Given The user go to Cabs and select Outstation Round Trip
    When user select From city and to city

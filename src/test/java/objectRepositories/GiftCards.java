@@ -19,13 +19,25 @@ import org.testng.Assert;
 
 import utilities.ExcelWrite;
 
+/**
+ * Page Object Model for the Gift Cards section. Supports navigation to gift
+ * card options, selecting a specific card, entering sender details, validating
+ * inputs, and capturing screenshots.
+ */
 public class GiftCards {
 	WebDriver driver;
 	JavascriptExecutor js;
 	Actions acts;
+
+	/** Flags for validation status */
 	static boolean emailFlag;
 	static boolean mobileFlag;
 
+	/**
+	 * Constructor to initialize Gift Cards page elements and utilities.
+	 * 
+	 * @param driver WebDriver instance used for browser interaction
+	 */
 	public GiftCards(WebDriver driver) {
 		this.driver = driver;
 		js = (JavascriptExecutor) driver;
@@ -33,6 +45,8 @@ public class GiftCards {
 		PageFactory.initElements(driver, this);
 		System.out.println("Initialized Cards page object");
 	}
+
+	// Web Elements
 
 	@FindBy(xpath = "//div[@class='_menurohdr']/ul/li[@class='_subheaderlink']")
 	WebElement moreIcon;
@@ -79,121 +93,137 @@ public class GiftCards {
 	@FindBy(xpath = "//div[@class=\"w_50 \"]")
 	WebElement formScreenshot;
 
+	/**
+	 * Navigates to the Gift Cards section via mouse hover.
+	 */
 	public void navigateToCards() {
-//		System.out.println("Navigating to Gift Card section");
 		acts.moveToElement(moreIcon).build().perform();
 		acts.moveToElement(giftIcon).build().perform();
-		giftIcon.click();
-//		System.out.println("Clicked on 'Gift Card'");
-	}
-
-	public void selectingCard() {
 		try {
-//		System.out.println("Scrolling to Festival tab and selecting Diwali card");
-			boolean chk = festivalTab.isDisplayed();
-			Assert.assertTrue(chk, "Festival cards is not displayed");
-			js.executeScript("arguments[0].scrollIntoView(true)", festivalTab);
-			js.executeScript("arguments[0].click()", festivalImg);
-			boolean chkD = diwaliCard.isDisplayed();
-			Assert.assertTrue(chkD, "Diwali card option is not displayed");
-			diwaliCard.click();
-//		System.out.println("Clicked on Diwali card");
+			giftIcon.click();
 		} catch (Exception e) {
-			Assert.fail("Not able to interact with Cards");
+			Assert.fail("Unable to click GiftCards icon");
 		}
 	}
 
-	public void fillForm(String amnt, String qty, String name) {
-//		System.out.println("Filling out the gift card form");
-		js.executeScript("arguments[0].scrollIntoView(true)", formHeader);
-		denominationInput.sendKeys(amnt);
-//		System.out.println("Entered denomination: "+amnt);
-
-		Select selectQty = new Select(quantityDropdown);
-		selectQty.selectByVisibleText(qty);
-//		System.out.println("Selected quantity: "+qty);
-
-		js.executeScript("arguments[0].scrollIntoView(true)", scrollToBtm);
-		sameAsReciever.click();
-//		System.out.println("Checked 'Same as Receiver'");
-
-		senderName.sendKeys(name);
-//		System.out.println("Entered sender name: "+name);
+	/**
+	 * Selects a festival-themed gift card such as Diwali. Asserts visibility of
+	 * required components before proceeding.
+	 */
+	public void selectingCard() {
+		try {
+			Assert.assertTrue(festivalTab.isDisplayed(), "Festival cards not displayed");
+			js.executeScript("arguments[0].scrollIntoView(true)", festivalTab);
+			js.executeScript("arguments[0].click()", festivalImg);
+			Assert.assertTrue(diwaliCard.isDisplayed(), "Diwali card not displayed");
+			diwaliCard.click();
+		} catch (Exception e) {
+			Assert.fail("Unable to interact with Gift Cards UI");
+		}
 	}
 
+	/**
+	 * Fills the sender form with denomination, quantity, and sender name.
+	 * 
+	 * @param amnt Amount as string (e.g., "1000")
+	 * @param qty  Quantity of cards (e.g., "1")
+	 * @param name Sender's full name
+	 */
+	public void fillForm(String amnt, String qty, String name) {
+		js.executeScript("arguments[0].scrollIntoView(true)", formHeader);
+		denominationInput.sendKeys(amnt);
+		new Select(quantityDropdown).selectByVisibleText(qty);
+		js.executeScript("arguments[0].scrollIntoView(true)", scrollToBtm);
+		sameAsReciever.click();
+		senderName.sendKeys(name);
+	}
+
+	/**
+	 * Validates and enters sender email. Triggers T&C acceptance if invalid.
+	 * 
+	 * @param emailInput Email string input
+	 * @throws IOException on screenshot capture error
+	 */
 	public void validateEmail(String emailInput) throws IOException {
 		emailFlag = false;
-//		System.out.println("Validating email: " + emailInput);
+		senderEmail.sendKeys(emailInput);
 
-		if (emailInput.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
-			senderEmail.sendKeys(emailInput);
-//			System.out.println("Entered valid email");
-		} else {
-			senderEmail.sendKeys(emailInput);
-//			System.out.println("Entered invalid email");
-			boolean chkAcc = acceptTnC.isDisplayed();
-			Assert.assertTrue(chkAcc, "Accept Conditions option is not displayed");
+		if (!emailInput.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+			Assert.assertTrue(acceptTnC.isDisplayed(), "Accept Conditions not displayed");
 			acceptTnC.click();
-//			System.out.println("Accepted terms and conditions");
 			emailFlag = true;
 		}
 	}
 
+	/**
+	 * Validates and enters sender mobile number. Triggers T&C acceptance if
+	 * invalid.
+	 * 
+	 * @param mobileInput Mobile number as string
+	 * @throws IOException on screenshot capture error
+	 */
 	public void validateMobileNum(String mobileInput) throws IOException {
 		mobileFlag = false;
-		if (mobileInput.matches("^\\d{10}$")) {
-			senderMobile.sendKeys(mobileInput);
-//			System.out.println("Entered valid mobile number");
+		senderMobile.sendKeys(mobileInput);
+
+		if (!mobileInput.matches("^\\d{10}$")) {
 			acceptTnC.click();
-//			System.out.println("Accepted terms and conditions");
-		} else {
-			senderMobile.sendKeys(mobileInput);
-//			System.out.println("Entered invalid mobile number");
-			acceptTnC.click();
-//			System.out.println("Accepted terms and conditions");
 			mobileFlag = true;
+		} else {
+			acceptTnC.click();
 		}
 	}
 
+	/**
+	 * Captures screenshots on validation failure and updates Excel sheet.
+	 * 
+	 * @param writer   ExcelWrite instance for result tracking
+	 * @param rowIndex Current row to be updated
+	 * @throws Exception on screenshot failure
+	 */
 	public void screenShots(ExcelWrite writer, int rowIndex) throws Exception {
-		if (emailFlag == true) {
+		if (emailFlag) {
 			takeScreenshot("Email");
 		}
-		if (mobileFlag == true) {
+		if (mobileFlag) {
 			takeScreenshot("MobileNo");
 		}
-		if (mobileFlag == false && emailFlag == false) {
+
+		if (!emailFlag && !mobileFlag) {
 			writer.setCellValue(rowIndex, 6, "Valid");
 			writer.fillCellGreen(rowIndex, 6);
-//			writer.setCellValue(rowIndex++,6,"Valid");
-
 		} else {
-
 			writer.setCellValue(rowIndex, 6, "Invalid");
 			writer.fillCellRed(rowIndex, 6);
-
 		}
-
 	}
 
+	/**
+	 * Performs combined validation for email and mobile number fields.
+	 * 
+	 * @param emailInput  Email address string
+	 * @param mobileInput Mobile number string
+	 * @throws IOException on validation error
+	 */
 	public void validation(String emailInput, String mobileInput) throws IOException {
 		validateEmail(emailInput);
 		validateMobileNum(mobileInput);
 	}
 
+	/**
+	 * Captures and stores screenshot of the form section for invalid inputs.
+	 * 
+	 * @param prefix Filename prefix (e.g., "Email")
+	 * @throws IOException if file cannot be saved
+	 */
 	private void takeScreenshot(String prefix) throws IOException {
-//		System.out.println("Taking screenshot for: " + prefix);
 		DateFormat df = new SimpleDateFormat("dd-MM-yy-hh-mm-ss-a");
-		Date date = new Date();
+		String timestamp = df.format(new Date());
 		File dir = new File(".\\Screenshots");
-
-		if (!dir.exists()) {
+		if (!dir.exists())
 			dir.mkdirs();
-//			System.out.println("Created Screenshots directory");
-		}
 
 		File srcFile = formScreenshot.getScreenshotAs(OutputType.FILE);
-		FileHandler.copy(srcFile, new File(".\\Screenshots\\" + prefix + "_" + df.format(date) + ".png"));
-//		System.out.println("Screenshot saved: " + prefix + "_" + df.format(date) + ".png");
+		FileHandler.copy(srcFile, new File(".\\Screenshots\\" + prefix + "_" + timestamp + ".png"));
 	}
 }

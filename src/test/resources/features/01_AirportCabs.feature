@@ -1,6 +1,6 @@
+	@sanity
 	Feature: Searching for Airport Cab details in EaseMyTrip Website
  
-  @sanity
   Scenario Outline: Cab booking with Excel data for Airport Pickup and Drop
     Given the user loads test data for "<TestCase>"
     And the user clicks on Airport transfer and selects Type

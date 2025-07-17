@@ -19,35 +19,43 @@ import org.testng.Assert;
 
 import utilities.JsonDataWriter;
 
+/**
+ * Page Object Model for Outstation Cab Booking. Handles user interaction for
+ * selecting source, destination, date, time, filtering, and extracting results
+ * into JSON.
+ */
 public class Outstation {
 	WebDriver driver;
 	WebDriverWait wait;
 
+	/**
+	 * Initializes the Outstation booking page with driver and wait configuration.
+	 * 
+	 * @param driver WebDriver instance to interact with browser
+	 */
 	public Outstation(WebDriver driver) {
 		this.driver = driver;
 		this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		PageFactory.initElements(driver, this);
 	}
 
-	// outstation
+	// Web elements for booking workflow
+
 	@FindBy(id = "li2")
 	WebElement outstation;
 
-	// from location
 	@FindBy(id = "sourceName")
 	WebElement from;
 
 	@FindBy(id = "a_FromSector_show")
 	WebElement fromCity;
 
-	// to location
 	@FindBy(id = "destinationName")
 	WebElement to;
 
 	@FindBy(id = "a_ToSector_show")
 	WebElement toCity;
 
-	// date and time
 	@FindBy(id = "datepicker")
 	WebElement pickupDate;
 
@@ -57,7 +65,6 @@ public class Outstation {
 	@FindBy(id = "rdatepicker")
 	WebElement returnDate;
 
-	// calendar navigation
 	@FindBy(xpath = "//span[@class='ui-datepicker-month']")
 	WebElement displayedMonth;
 
@@ -70,7 +77,6 @@ public class Outstation {
 	@FindBy(xpath = "//span[@class='ui-icon ui-icon-circle-triangle-w']")
 	WebElement prevMonthBtn;
 
-	// AM/PM selectors
 	@FindBy(xpath = "//label[@for='am']")
 	WebElement amSelectorPickup;
 
@@ -83,30 +89,24 @@ public class Outstation {
 	@FindBy(xpath = "//div[@id='rap']//label[@for='rpm']")
 	WebElement pmSelectorReturn;
 
-	// done btn
 	@FindBy(xpath = "//div[@onclick='Done()']")
 	WebElement pickupDoneBtn;
 
 	@FindBy(xpath = "//div[@onclick='rDone()']")
 	WebElement returnDoneBtn;
 
-	// search
 	@FindBy(xpath = "//div[@onclick='GetList()']")
 	WebElement searchBtn;
 
-	// SUV filter
 	@FindBy(xpath = "//label[3]//div[1]//span[2]")
 	WebElement suvFilter;
 
-	// click for more options
 	@FindBy(xpath = "//div[@class='blue-link']//a")
 	WebElement options;
 
-	// close btn
 	@FindBy(xpath = "//span[@class='close']")
 	WebElement closeBtn;
 
-	// lists
 	@FindBy(xpath = "//div[@id='StartCity']//ul//li")
 	List<WebElement> citySuggestions_from;
 
@@ -116,87 +116,75 @@ public class Outstation {
 	@FindBy(xpath = "//label[contains(@class, 'fare')]")
 	List<WebElement> vehicleBlocks;
 
-	// switching to outstation
+	/**
+	 * Switches to the outstation booking section.
+	 */
 	public void switchToOutstation() {
 		outstation.click();
-//		System.out.println("Clicked on outstation");
 	}
 
-	// from field
+	/**
+	 * Enters and selects the source city.
+	 * 
+	 * @param osFromCity Source city name
+	 */
 	public void fromField(String osFromCity) {
 		from.click();
-//		System.out.println("Clicked on from field");
-
 		fromCity.click();
-//		System.out.println("Clicked on city field");
-
 		fromCity.clear();
-//		System.out.println("Cleared city field");
-
 		fromCity.sendKeys(osFromCity);
-//		System.out.println("Entered value to city field");
 
 		while (true) {
 			try {
 				wait.until(ExpectedConditions.visibilityOfAllElements(citySuggestions_from));
-
 				for (WebElement suggestion : citySuggestions_from) {
 					String text = suggestion.getText();
-
 					if (text.startsWith(osFromCity) && text.contains(osFromCity)) {
 						suggestion.click();
-//						System.out.println("City selected");
 						break;
 					}
 				}
-
 				break;
 			} catch (StaleElementReferenceException e) {
-//				System.out.println("Caught stale element for 'from' city, retrying...");
 			}
 		}
 	}
 
-	// to field
+	/**
+	 * Enters and selects the destination city.
+	 * 
+	 * @param osToCity Destination city name
+	 */
 	public void toField(String osToCity) {
 		to.click();
-//		System.out.println("Clicked on to field");
-
 		toCity.click();
-//		System.out.println("Clicked on city field");
-
 		toCity.clear();
-//		System.out.println("Cleared city field");
-
 		toCity.sendKeys(osToCity);
-//		System.out.println("Entered value to city field");
 
 		while (true) {
 			try {
 				wait.until(ExpectedConditions.visibilityOfAllElements(citySuggestions_to));
-
 				for (WebElement suggestion : citySuggestions_to) {
 					String text = suggestion.getText();
-
 					if (text.startsWith(osToCity) && text.contains(osToCity)) {
 						suggestion.click();
-//						System.out.println("City selected");
 						break;
 					}
 				}
-
 				break;
 			} catch (StaleElementReferenceException e) {
-//				System.out.println("Caught stale element for 'to' city, retrying...");
 			}
 		}
 	}
 
-	// pickup date
+	/**
+	 * Selects pickup date from calendar widget.
+	 * 
+	 * @param date Date string in dd/MM/yyyy format
+	 */
 	public void pickupDate(String date) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate targetDate = LocalDate.parse(date, formatter);
-
 		String targetDay = String.valueOf(targetDate.getDayOfMonth());
 		YearMonth targetYearMonth = YearMonth.from(targetDate);
 
@@ -225,11 +213,14 @@ public class Outstation {
 		driver.findElement(By.xpath("//a[normalize-space()='" + targetDay + "']")).click();
 	}
 
-	// return date
+	/**
+	 * Selects return date from calendar widget.
+	 * 
+	 * @param date Date string in dd/MM/yyyy format
+	 */
 	public void returnDate(String date) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate targetDate = LocalDate.parse(date, formatter);
-
 		String targetDay = String.valueOf(targetDate.getDayOfMonth());
 		YearMonth targetYearMonth = YearMonth.from(targetDate);
 
@@ -259,20 +250,21 @@ public class Outstation {
 		driver.findElement(By.xpath("//a[normalize-space()='" + targetDay + "']")).click();
 	}
 
-	// pickup time
+	/**
+	 * Selects pickup time from time picker.
+	 * 
+	 * @param time Time string in HH:mm AM/PM format
+	 */
 	public void pickupTime(String time) {
 		String[] timeParts = time.split("[: ]");
-
 		String hours = timeParts[0];
 		String minutes = timeParts[1];
 		String meridian = timeParts[2];
 
 		if (meridian.equals("AM")) {
 			amSelectorPickup.click();
-//			System.out.println("Selected 'AM' as meridian.");
 		} else if (meridian.equals("PM")) {
 			pmSelectorPickup.click();
-//			System.out.println("Selected 'PM' as meridian.");
 		}
 
 		driver.findElement(By.xpath("//div[@id='hr']//ul//li[normalize-space()='" + hours + " Hr.']")).click();
@@ -280,24 +272,28 @@ public class Outstation {
 		pickupDoneBtn.click();
 	}
 
+	/**
+	 * Clicks to activate return time picker.
+	 */
 	public void clickReturnTime() {
 		returnDateSelection.click();
 	}
 
-	// return time
+	/**
+	 * Selects return time from time picker.
+	 * 
+	 * @param time Time string in HH:mm AM/PM format
+	 */
 	public void returnTime(String time) {
 		String[] timeParts = time.split("[: ]");
-
 		String hours = timeParts[0];
 		String minutes = timeParts[1];
 		String meridian = timeParts[2];
 
 		if (meridian.equals("AM")) {
 			amSelectorReturn.click();
-//			System.out.println("Selected 'AM' as meridian.");
 		} else if (meridian.equals("PM")) {
 			pmSelectorReturn.click();
-//			System.out.println("Selected 'PM' as meridian.");
 		}
 
 		driver.findElement(By.xpath("//div[@id='rhr']//ul//li[normalize-space()='" + hours + " Hr.']")).click();
@@ -305,27 +301,31 @@ public class Outstation {
 		returnDoneBtn.click();
 	}
 
-	// searching for results
+	/**
+	 * Initiates search for outstation cabs.
+	 */
 	public void search() {
-
 		searchBtn.click();
-//		System.out.println("Clicked on search");
 	}
 
-	// fetching the results
+	/**
+	 * Applies SUV filter, expands options, and extracts vehicle names and prices.
+	 * Stores result data in JSON with scenario context.
+	 * 
+	 * @param scenario Scenario name used for JSON organization
+	 */
 	public void results(String scenario) {
 		boolean chk = suvFilter.isDisplayed();
-		Assert.assertTrue(chk, "SUV check box not enabled");
+		Assert.assertTrue(chk, "SUV checkbox not enabled");
 		suvFilter.click();
-//		System.out.println("Clicked 'SUV' for filters");
+
 		boolean optChk = options.isDisplayed();
-		Assert.assertTrue(optChk, "SUV check box not enabled");
+		Assert.assertTrue(optChk, "Options link not visible");
 		options.click();
-//		System.out.println("Clicked for more options");
 
 		wait.until(ExpectedConditions.visibilityOfAllElements(vehicleBlocks));
-
 		Assert.assertTrue(vehicleBlocks.size() > 0, "No cab prices were displayed.");
+
 		for (WebElement block : vehicleBlocks) {
 			try {
 				WebElement nameElement = block
@@ -334,8 +334,8 @@ public class Outstation {
 
 				WebElement priceElement = block.findElement(By.xpath(".//div[contains(@class, 'ruppes')]//h6"));
 				String price = priceElement.getText().trim();
+
 				JsonDataWriter.writeSimpleDataWithScenario(scenario, vehicleName, price, "OutstationWrite.json");
-//				System.out.println(vehicleName + " - " + price);
 			} catch (Exception e) {
 				System.out.println("[Vehicle name or price not found]");
 			}

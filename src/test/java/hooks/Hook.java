@@ -19,7 +19,13 @@ import io.qameta.allure.Allure;
 import objectRepositories.HomePage;
 import utilities.DriverSetup;
 
+/**
+ * Cucumber hook class for managing test lifecycle. Handles WebDriver
+ * initialization, scenario-level reporting, and teardown after all scenarios
+ * are executed.
+ */
 public class Hook {
+
 	public static WebDriver driver;
 	public static String url;
 	public static DriverSetup setUp;
@@ -28,6 +34,12 @@ public class Hook {
 	static String browser;
 	static Properties p;
 
+	/**
+	 * Executed before all scenarios. Initializes the WebDriver and navigates to
+	 * base URL. Browser type is retrieved from TestNG XML parameters.
+	 *
+	 * @throws IOException if config.properties fails to load
+	 */
 	@BeforeAll
 	public static void setup() throws IOException {
 		setUp = new DriverSetup();
@@ -35,11 +47,20 @@ public class Hook {
 		p = new Properties();
 		p.load(file);
 		url = p.getProperty("baseURL");
+
+		// Get browser name from TestNG XML
 		browser = Reporter.getCurrentTestResult().getTestContext().getCurrentXmlTest().getParameter("browser");
+
 		driver = setUp.intializeWebDriver(browser);
 		driver.get(url);
 	}
 
+	/**
+	 * After each scenario, attach a screenshot to Allure report if the test has
+	 * failed.
+	 *
+	 * @param scenario Cucumber Scenario object
+	 */
 	@After
 	public void attachSS(Scenario scenario) {
 		if (scenario.isFailed()) {
@@ -48,6 +69,9 @@ public class Hook {
 		}
 	}
 
+	/**
+	 * Executed once after all scenarios finish. Quits the WebDriver.
+	 */
 	@AfterAll
 	public static void tearDown() {
 		setUp.driverTearDown();

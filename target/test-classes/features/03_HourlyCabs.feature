@@ -1,5 +1,7 @@
-Feature: Searching for Hourly Cab details on EaseMyTrip
+
 @sanity
+Feature: Searching for Hourly Cab details on EaseMyTrip
+
 Scenario: Book hourly rental with time, date and SUV filter
     Given user open the browser and navigate to EaseMyTrip
     When The user go to Cabs and select hourly

@@ -1,5 +1,7 @@
+
+@fieldLevel
 Feature: Search Activities on EaseMyTrip
- @fieldLevel
+ 
   Scenario: Validating field level functionality of City Text box
     Given The user open the browser and navigate to EaseMyTrip
     When The user click activity

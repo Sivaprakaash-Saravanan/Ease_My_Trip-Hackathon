@@ -50,7 +50,6 @@ public class CabHourlyStepDef {
 
 	@When("The user go to Cabs and select hourly")
 	public void the_user_go_to_cabs_and_select_hourly() {
-		// Write code here that turns the phrase above into concrete actions
 		home.goToCabs();
 		boolean urlCheck = driver.getCurrentUrl().contains("cabs");
 		Assert.assertTrue(urlCheck, "Not navigated to cabs page");
@@ -60,7 +59,6 @@ public class CabHourlyStepDef {
 
 	@When("The user search hourly cab from Visakhapatnam on 14 September 2026 at 8:30 AM for 4 hours")
 	public void the_user_search_hourly_cab_from_on_at_for_hours() {
-		// Write code here that turns the phrase above into concrete actions
 		log.info("entering data...");
 		String city = cabData.get("City").getAsString();
 		String day = cabData.get("Day").getAsString();
@@ -74,16 +72,13 @@ public class CabHourlyStepDef {
 
 	@Then("The user apply SUV filter")
 	public void the_user_apply_suv_filter() {
-		// Write code here that turns the phrase above into concrete actions
 		log.info("entered data and clicked on search");
 		hour.filterSUV();
 	}
 
 	@Then("The user print the least fare")
 	public void the_user_print_the_least_fare() throws IOException {
-		// Write code here that turns the phrase above into concrete actions
 		JsonDataWriter.writeSimpleData("SUV", hour.getLeastFare(), "HourlyWriting.json");
-//	    System.out.println(hour.getLeastFare());
 		log.info("displayed data");
 		ScreenshotUtil.captureScreenShot(driver, "CabHourlyTC");
 		log.info("Hourly  cabs TC completed");

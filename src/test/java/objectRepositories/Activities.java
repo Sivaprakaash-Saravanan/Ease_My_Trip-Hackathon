@@ -17,11 +17,20 @@ import org.testng.Assert;
 
 import utilities.TextFileWriter;
 
+/**
+ * Page Object Model for the Activities booking section. Handles city search,
+ * calendar selection, filtering, and result extraction.
+ */
 public class Activities {
 	WebDriver driver;
 	JavascriptExecutor js;
 	WebDriverWait wait;
 
+	/**
+	 * Constructor that initializes web elements and supporting utilities.
+	 * 
+	 * @param driver WebDriver instance used to interact with browser
+	 */
 	public Activities(WebDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
@@ -30,140 +39,171 @@ public class Activities {
 		System.out.println("Initialized Activities_ObjectRepository");
 	}
 
+	/** Input field for partial city name */
 	@FindBy(id = "txtcityname")
 	WebElement city;
 
+	/** Calendar field for selecting travel date */
 	@FindBy(id = "traveldateSec")
 	WebElement clickDate;
 
+	/** Element displaying current month and year in calendar */
 	@FindBy(xpath = "//li[@class='wt600']")
 	WebElement currentMonthYear;
 
+	/** Button for navigating to next month */
 	@FindBy(xpath = "//li[@id='traveldatenextMonth']")
 	WebElement nextMonthButton;
 
+	/** All date elements in calendar */
 	@FindBy(xpath = "//table//tbody//tr//td//span")
 	List<WebElement> allDates;
 
+	/** Search button to find activities */
 	@FindBy(id = "srchBtn")
 	WebElement searchBtn;
 
+	/** Input field for full city name (cleared before search) */
 	@FindBy(id = "txtcityname")
 	WebElement fullCity;
 
+	/** Suggestion list container */
 	@FindBy(xpath = "//div[@id='autolist']/ul")
 	WebElement suggestionListContainer;
 
+	/** List of auto-suggested cities */
 	@FindBy(xpath = "//div[@id='autolist']/ul/li")
 	List<WebElement> citySuggestions;
 
+	/** Sort option: Price Low to High */
 	@FindBy(xpath = "//li[@id='plh']")
 	WebElement priceLowToHigh;
 
+	/** Checkbox image for filtering day trips */
 	@FindBy(xpath = "//div[@id='Day_Trips-chk']//img[@class='tickImg']")
 	WebElement dayTripsCheckbox;
 
+	/** Container element for day trips checkbox */
 	@FindBy(xpath = "//div[@id='Day_Trips-chk']/..")
 	WebElement dayTripsImg;
 
+	/** List of activity city names in search results */
 	@FindBy(xpath = "//div[@class='_cityname']")
 	List<WebElement> cityNames;
 
+	/**
+	 * Sends partial city name to auto-suggestion field.
+	 * 
+	 * @param partialCityName Partial input for auto-suggestion
+	 */
 	public void enterCity(String partialCityName) {
-//		System.out.println("Entering partial city name: " + partialCityName);
 		city.sendKeys(partialCityName);
 	}
 
+	/**
+	 * Opens the calendar widget for date selection.
+	 */
 	public void openCalender() {
-//		System.out.println("Opening calendar");
 		clickDate.click();
 	}
 
+	/**
+	 * Navigates the calendar until the target month and year are displayed.
+	 * 
+	 * @param targetMonthYear Desired month and year (e.g., "July 2025")
+	 */
 	public void selectMonthAndYear(String targetMonthYear) {
-//		System.out.println("Selecting month and year: " + targetMonthYear);
-
 		while (true) {
 			String displayed = currentMonthYear.getText().trim();
-//			System.out.println("Currently displayed: " + displayed);
-
 			if (displayed.equalsIgnoreCase(targetMonthYear)) {
-//				System.out.println("Target month/year matched");
 				break;
 			}
-
-//			System.out.println("Clicking next month");
 			nextMonthButton.click();
 		}
 	}
 
+	/**
+	 * Selects the desired date from the calendar.
+	 * 
+	 * @param targetDate Day of the month to select (e.g., "15")
+	 */
 	public void selectDate(String targetDate) {
-//		System.out.println("Selecting date: " + targetDate);
-
 		for (WebElement dateElement : allDates) {
 			if (dateElement.getText().equals(targetDate)) {
-//				System.out.println("Date matched, clicking: " + targetDate);
 				dateElement.click();
 				break;
 			}
 		}
 	}
 
+	/**
+	 * Clicks the search button to load activity results.
+	 */
 	public void clickSearchBtn() {
-//		System.out.println("Clicking on 'Search' button");
 		searchBtn.click();
 	}
 
+	/**
+	 * Clears the city input field and enters full city name.
+	 * 
+	 * @param fullCityName Complete name of the city to search
+	 */
 	public void enterFullCity(String fullCityName) {
-//		System.out.println("Clearing and entering full city name: " + fullCityName);
 		fullCity.clear();
 		fullCity.sendKeys(fullCityName);
 	}
 
+	/**
+	 * Selects city from auto-suggestions using partial match.
+	 * 
+	 * @param cityNamePartial Partial city name used to locate suggestions
+	 */
 	public void selectCity(String cityNamePartial) {
-//		System.out.println("Waiting for city suggestions to appear");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='autolist']/ul/li")));
 		while (true) {
 			try {
 				for (WebElement city : citySuggestions) {
 					String text = city.getText();
-//					System.out.println("Checking suggestion: " + text);
-
 					if (text.startsWith(cityNamePartial) && text.contains(cityNamePartial)) {
-//						System.out.println("Matching city found, clicking: " + text);
 						city.click();
 						break;
 					}
 				}
-
 				break;
 			} catch (StaleElementReferenceException e) {
-//				System.out.println("Caught stale element for city suggestions, retrying...");
 			}
 		}
 	}
 
+	/**
+	 * Opens the sort menu and selects "Price Low to High".
+	 */
 	public void openPriceLowToHigh() {
-//		System.out.println("Clicking on 'Price Low to High' filter");
 		boolean chk = priceLowToHigh.isDisplayed();
 		Assert.assertTrue(chk, "Sort option is not displayed");
 		priceLowToHigh.click();
 	}
 
+	/**
+	 * Applies the Day Trips filter using JavaScript click for reliability.
+	 */
 	public void clickDayTripsCheckbox() {
-//		System.out.println("Clicking on 'Day Trips' checkbox using JavaScript");
 		boolean chk = dayTripsImg.isDisplayed();
-		Assert.assertTrue(chk, "Day trips ckeckbox is not displayed");
+		Assert.assertTrue(chk, "Day trips checkbox is not displayed");
 		js.executeScript("arguments[0].click();", dayTripsCheckbox);
 	}
 
+	/**
+	 * Prints up to five city names from activity results into a text file.
+	 * 
+	 * @throws IOException if file writing fails
+	 */
 	public void printCityNames() throws IOException {
-//		System.out.println("Printing city names from results:");
-		Assert.assertTrue(cityNames.size() > 0, "city names not displayed");
+		Assert.assertTrue(cityNames.size() > 0, "City names not displayed");
 		int i = 1;
 		TextFileWriter.clearFile("ActivitiesResults.txt");
 		TextFileWriter.writeToTextFile("ActivitiesResults.txt", "Activities:\n-------------------------------------");
 		for (WebElement city : cityNames) {
-//			System.out.println(city.getText());
 			if (i > 5) {
 				break;
 			}
