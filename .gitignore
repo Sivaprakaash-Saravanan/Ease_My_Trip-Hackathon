@@ -16,3 +16,10 @@
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# Java class files
+*.class
+
+# Temporary files
+*.tmp
+*.bak

@@ -1,8 +1,8 @@
-# Exclude Allure reports from GitHub language stats
+# Exclude Allure reports
 target/allure-report/** linguist-vendored
 target/allure-results/** linguist-vendored
 
-# Exclude Cucumber HTML reports
+# Exclude Cucumber reports
 target/cucumber-reports/** linguist-vendored
 
 # Exclude TestNG output reports
@@ -11,3 +11,6 @@ test-output/** linguist-vendored
 # Exclude screenshots and logs
 Screenshots/** linguist-vendored
 logs/** linguist-vendored
+
+# Exclude additional HTML reports directly under target
+target/*.html linguist-vendored
