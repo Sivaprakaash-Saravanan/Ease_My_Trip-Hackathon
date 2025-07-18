@@ -1,0 +1,9 @@
+# Exclude Allure reports from GitHub language stats
+target/allure-report/** linguist-vendored
+target/allure-results/** linguist-vendored
+
+# Exclude screenshots from language stats
+Screenshots/** linguist-vendored
+
+# Exclude logs from language stats
+logs/** linguist-vendored
