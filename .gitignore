@@ -1,1 +1,18 @@
+# Maven build output
 /target/
+
+# TestNG output
+/test-output/
+
+# Logs
+*.log
+/logs/
+
+# IDE-specific files
+*.iml
+.idea/
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
