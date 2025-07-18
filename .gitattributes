@@ -2,8 +2,12 @@
 target/allure-report/** linguist-vendored
 target/allure-results/** linguist-vendored
 
-# Exclude screenshots from language stats
-Screenshots/** linguist-vendored
+# Exclude Cucumber HTML reports
+target/cucumber-reports/** linguist-vendored
 
-# Exclude logs from language stats
+# Exclude TestNG output reports
+test-output/** linguist-vendored
+
+# Exclude screenshots and logs
+Screenshots/** linguist-vendored
 logs/** linguist-vendored
